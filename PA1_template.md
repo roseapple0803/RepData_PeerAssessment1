@@ -1,6 +1,11 @@
 # Reproducible Research: Peer Assessment 1
 
 
+```r
+knitr::opts_chunk$set(fig.width=12, fig.height=8, echo=TRUE, warning=FALSE, message=FALSE, fig.path='figure/')
+```
+
+
 ## Loading and preprocessing the data
 
 ```r
@@ -17,27 +22,6 @@ activityNoNA <- na.omit(activity)
 ```r
 library(plyr)
 library(dplyr)
-```
-
-```
-## 
-## Attaching package: 'dplyr'
-## 
-## The following objects are masked from 'package:plyr':
-## 
-##     arrange, count, desc, failwith, id, mutate, rename, summarise,
-##     summarize
-## 
-## The following objects are masked from 'package:stats':
-## 
-##     filter, lag
-## 
-## The following objects are masked from 'package:base':
-## 
-##     intersect, setdiff, setequal, union
-```
-
-```r
 stepsPerDayTotal <- ddply(activityNoNA, c("date"), summarize, total = sum(steps))
 summary(stepsPerDayTotal)
 ```
@@ -78,7 +62,7 @@ theplot <- theplot + scale_y_continuous(limits=c(0, 30), breaks=seq(0,30,5))
 print(theplot)
 ```
 
-![](PA1_template_files/figure-html/plotHist-1.png) 
+![](figure/plotHist-1.png) 
 
 ```r
 ##dev.off()
@@ -112,7 +96,7 @@ theplot <- theplot + annotate("text", x=1500, y=180, label="maximum number of st
 print(theplot)
 ```
 
-![](PA1_template_files/figure-html/plotPattern-1.png) 
+![](figure/plotPattern-1.png) 
 
 ```r
 ##dev.off()
@@ -163,7 +147,7 @@ theplot <- theplot + scale_x_continuous(breaks=seq(0, 30000, 5000)) +  scale_y_c
 print(theplot)
 ```
 
-![](PA1_template_files/figure-html/plotHistReplaced-1.png) 
+![](figure/plotHistReplaced-1.png) 
 
 ```r
 ##dev.off()
@@ -175,18 +159,6 @@ print(theplot)
 
 ```r
 library(lubridate)
-```
-
-```
-## 
-## Attaching package: 'lubridate'
-## 
-## The following object is masked from 'package:plyr':
-## 
-##     here
-```
-
-```r
 daysOfWeek <- as.factor(c("weekend", "weekday","weekday","weekday","weekday","weekday", "weekend"))
 activityCopy <- mutate(activityCopy, daytype = daysOfWeek[wday(date)])
 
@@ -202,7 +174,7 @@ theplot <- theplot + scale_x_continuous(limits=c(0,2355), breaks=seq(0, 2355, 25
 print(theplot)
 ```
 
-![](PA1_template_files/figure-html/plotPanel-1.png) 
+![](figure/plotPanel-1.png) 
 
 ```r
 ##dev.off()

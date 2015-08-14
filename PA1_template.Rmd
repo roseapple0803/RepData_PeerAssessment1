@@ -5,6 +5,10 @@ output:
     keep_md: true
 ---
 
+```{r global_options}
+knitr::opts_chunk$set(fig.width=12, fig.height=8, echo=TRUE, warning=FALSE, message=FALSE, fig.path='figure/')
+```
+
 
 ## Loading and preprocessing the data
 ```{r dataPreprocess}
@@ -30,7 +34,7 @@ print(paste("mean total number of steps is ", meanTotal))
 
 
 ### Plotting the histogram ###
-```{r plotHist}
+```{r plotHist, fig.height=5}
 library(ggplot2)
 ##png(file="histogram.png", width=480, height=480)
 g <- ggplot(stepsPerDayTotal, aes(x=total))
