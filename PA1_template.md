@@ -52,7 +52,7 @@ print(paste("mean total number of steps is ", meanTotal))
 
 ```r
 library(ggplot2)
-##png(file="histogram.png", width=480, height=480)
+
 g <- ggplot(stepsPerDayTotal, aes(x=total))
 binsize <- 5000
 theplot <- g + geom_histogram(binwidth=binsize, fill="white", color="red", origin=0)
@@ -63,10 +63,6 @@ print(theplot)
 ```
 
 ![](figure/plotHist-1.png) 
-
-```r
-##dev.off()
-```
 
 
 
@@ -88,7 +84,6 @@ print(paste("The interval time with the maximum number of steps is ", intervalTi
 ### Plotting the pattern ###
 
 ```r
-##png(file="pattern.png", width=480, height=480)
 g <- ggplot(stepsPerIntervalAvg, aes(x=interval, y=avg))
 theplot <- g + geom_line(color="black") + xlab("Interval") + ylab("Average number of steps") + ggtitle("A time series plot across all days")
 theplot <- theplot + annotate("rect", xmin=800, xmax=900, ymin=0, ymax=225, alpha=.1,fill="red")
@@ -97,10 +92,6 @@ print(theplot)
 ```
 
 ![](figure/plotPattern-1.png) 
-
-```r
-##dev.off()
-```
 
 
 ## Imputing missing values
@@ -137,7 +128,6 @@ summary(stepsPerDayTotalCopy)
 ### Plotting the histogram ###
 
 ```r
-##png(file="histogram_NAreplaced.png", width=480, height=480)
 g <- ggplot(stepsPerDayTotalCopy, aes(x=total))
 binsize <- 5000
 theplot <- g + geom_histogram(binwidth=binsize, fill="white", colour="red", origin=0)
@@ -148,10 +138,6 @@ print(theplot)
 ```
 
 ![](figure/plotHistReplaced-1.png) 
-
-```r
-##dev.off()
-```
 
 
 
@@ -165,7 +151,7 @@ activityCopy <- mutate(activityCopy, daytype = daysOfWeek[wday(date)])
 stepsBydaytype <- ddply(activityCopy, c("daytype","interval"), summarize, avg = mean(steps))
 
 ### Display the panel plot ###
-##png(file="panel.png", width=480, height=480)
+
 g <- ggplot(stepsBydaytype, aes(x=interval, y=avg))
 theplot <- g + geom_line(color="red") + labs(x="Interval", y="Average number of steps") + facet_wrap(~daytype, nrow=2)
 
@@ -175,8 +161,4 @@ print(theplot)
 ```
 
 ![](figure/plotPanel-1.png) 
-
-```r
-##dev.off()
-```
 
