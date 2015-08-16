@@ -58,10 +58,11 @@ sprintf("mean and median total number of steps per day are %.1f and %.1f", meanT
 library(ggplot2)
 
 g <- ggplot(stepsPerDayTotal, aes(x=total))
-binsize <- 5000
+binsize <- 1000
 theplot <- g + geom_histogram(binwidth=binsize, fill="white", color="red", origin=0)
 theplot <- theplot + xlab("Total number of steps") + ylab("Count") + ggtitle("Histogram of the total number\n of steps taken each day")
-theplot <- theplot + scale_y_continuous(limits=c(0, 30), breaks=seq(0,30,5))
+theplot <- theplot + scale_y_continuous(limits=c(0, 12), breaks=seq(0,12,2))
+theplot <- theplot + scale_x_continuous(limits=c(0, 25000), breaks=seq(0,25000,2000))
 print(theplot)
 ```
 
@@ -90,7 +91,7 @@ print(paste("The interval time with the maximum number of steps is ", intervalTi
 g <- ggplot(stepsPerIntervalAvg, aes(x=interval, y=avg))
 theplot <- g + geom_line(color="black") + xlab("Interval") + ylab("Average number of steps") + ggtitle("A time series plot across all days")
 theplot <- theplot + annotate("rect", xmin=800, xmax=900, ymin=0, ymax=225, alpha=.1,fill="red")
-theplot <- theplot + annotate("text", x=1500, y=180, label="maximum number of steps\nat the interval 835 ")
+theplot <- theplot + annotate("text", x=1300, y=180, label="maximum number of steps\nat the interval 835 ")
 print(theplot)
 ```
 
@@ -149,10 +150,11 @@ sprintf("mean and median total number of steps per day are %.1f and %.1f", meanT
 
 ```r
 g <- ggplot(stepsPerDayTotalCopy, aes(x=total))
-binsize <- 5000
+binsize <- 1000
 theplot <- g + geom_histogram(binwidth=binsize, fill="white", colour="red", origin=0)
 theplot <-  theplot + xlab("Total number of steps") + ylab("Count") + ggtitle("Histogram of the total number of steps \ntaken each day with NA being replaced")
-theplot <- theplot + scale_x_continuous(breaks=seq(0, 30000, 5000)) +  scale_y_continuous(limits=c(0,40), breaks=seq(0, 50, 5)) 
+theplot <- theplot +  scale_y_continuous(limits=c(0,20), breaks=seq(0, 20, 2)) 
+theplot <- theplot + scale_x_continuous(limits=c(0, 25000), breaks=seq(0,25000,2000))
 print(theplot)
 ```
 
