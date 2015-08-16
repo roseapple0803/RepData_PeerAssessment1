@@ -1,4 +1,5 @@
 # Reproducible Research: Peer Assessment 1
+Sunday, August 16, 2015  
 
 
 ```r
@@ -22,6 +23,9 @@ activityNoNA <- na.omit(activity)
 ```r
 library(plyr)
 library(dplyr)
+
+## setting na.rm=TRUE in activity only fill NA steps with 0
+## instead activityNoNA has all the observations with NA steps removed
 stepsPerDayTotal <- ddply(activityNoNA, c("date"), summarize, total = sum(steps))
 summary(stepsPerDayTotal)
 ```
@@ -39,16 +43,16 @@ summary(stepsPerDayTotal)
 
 ```r
 meanTotal <- mean(stepsPerDayTotal$total)
-
-print(paste("mean total number of steps is ", meanTotal))
+medianTotal <- median(stepsPerDayTotal$total)
+sprintf("mean and median total number of steps per day are %.1f and %.1f", meanTotal, medianTotal)
 ```
 
 ```
-## [1] "mean total number of steps is  10766.1886792453"
+## [1] "mean and median total number of steps per day are 10766.2 and 10765.0"
 ```
 
 
-### Plotting the histogram ###
+**Plotting the histogram**
 
 ```r
 library(ggplot2)
@@ -56,7 +60,6 @@ library(ggplot2)
 g <- ggplot(stepsPerDayTotal, aes(x=total))
 binsize <- 5000
 theplot <- g + geom_histogram(binwidth=binsize, fill="white", color="red", origin=0)
-
 theplot <- theplot + xlab("Total number of steps") + ggtitle("Histogram of the total number\n of steps taken each day")
 theplot <- theplot + scale_y_continuous(limits=c(0, 30), breaks=seq(0,30,5))
 print(theplot)
@@ -81,7 +84,7 @@ print(paste("The interval time with the maximum number of steps is ", intervalTi
 ```
 ## [1] "The interval time with the maximum number of steps is  835"
 ```
-### Plotting the pattern ###
+**Plotting a time series pattern**
 
 ```r
 g <- ggplot(stepsPerIntervalAvg, aes(x=interval, y=avg))
@@ -95,6 +98,9 @@ print(theplot)
 
 
 ## Imputing missing values
+- make a copy of the dataset first
+- use the mean for the same 5-minute interval to fill in the steps with NAs
+
 
 ```r
 NAsteps <- filter(activity, is.na(steps))
@@ -106,11 +112,9 @@ print(paste("The number of records with missing values is ", nrow(NAsteps)))
 ```
 
 ```r
-## make a copy of the dataset, fill in NA steps with the mean for that 5-minute interval
 activityCopy <- activity
 criteria <- is.na(activityCopy$steps) & activityCopy$interval == stepsPerIntervalAvg$interval
 activityCopy[criteria, c("steps")] <- stepsPerIntervalAvg$avg
-
 stepsPerDayTotalCopy <- ddply(activityCopy, c("date"), summarize, total = sum(steps))
 summary(stepsPerDayTotalCopy)
 ```
@@ -125,13 +129,28 @@ summary(stepsPerDayTotalCopy)
 ##  2012-10-06: 1   Max.   :21194  
 ##  (Other)   :55
 ```
-### Plotting the histogram ###
+
+```r
+meanTotal <- mean(stepsPerDayTotalCopy$total)
+medianTotal <- median(stepsPerDayTotalCopy$total)
+sprintf("mean and median total number of steps per day are %.1f and %.1f", meanTotal, medianTotal)
+```
+
+```
+## [1] "mean and median total number of steps per day are 10766.2 and 10766.2"
+```
+**The Observation:**  
+
+1.mean and median values are almost the same as the ones without NA steps being replaced  
+2.The values for the first quarter and the 3rd quarter, however, are different
+
+
+**Plotting the histogram with NA steps being replaced**
 
 ```r
 g <- ggplot(stepsPerDayTotalCopy, aes(x=total))
 binsize <- 5000
 theplot <- g + geom_histogram(binwidth=binsize, fill="white", colour="red", origin=0)
-
 theplot <-  theplot + xlab("Total number of steps") + ggtitle("Histogram of the total number\n of steps taken each day")
 theplot <- theplot + scale_x_continuous(breaks=seq(0, 30000, 5000)) +  scale_y_continuous(limits=c(0,40), breaks=seq(0, 50, 5)) 
 print(theplot)
@@ -142,23 +161,19 @@ print(theplot)
 
 
 ## Are there differences in activity patterns between weekdays and weekends?
+**YES. It shows on the plot that the average number of steps taken roughly between 1000 and 1750 are higher on weekends.**
+
 
 ```r
 library(lubridate)
 daysOfWeek <- as.factor(c("weekend", "weekday","weekday","weekday","weekday","weekday", "weekend"))
 activityCopy <- mutate(activityCopy, daytype = daysOfWeek[wday(date)])
-
 stepsBydaytype <- ddply(activityCopy, c("daytype","interval"), summarize, avg = mean(steps))
-
-### Display the panel plot ###
 
 g <- ggplot(stepsBydaytype, aes(x=interval, y=avg))
 theplot <- g + geom_line(color="red") + labs(x="Interval", y="Average number of steps") + facet_wrap(~daytype, nrow=2)
-
 theplot <- theplot + scale_x_continuous(limits=c(0,2355), breaks=seq(0, 2355, 250))
-
 print(theplot)
 ```
 
 ![](figure/plotPanel-1.png) 
-
