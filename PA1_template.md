@@ -60,7 +60,7 @@ library(ggplot2)
 g <- ggplot(stepsPerDayTotal, aes(x=total))
 binsize <- 5000
 theplot <- g + geom_histogram(binwidth=binsize, fill="white", color="red", origin=0)
-theplot <- theplot + xlab("Total number of steps") + ggtitle("Histogram of the total number\n of steps taken each day")
+theplot <- theplot + xlab("Total number of steps") + ylab("Count") + ggtitle("Histogram of the total number\n of steps taken each day")
 theplot <- theplot + scale_y_continuous(limits=c(0, 30), breaks=seq(0,30,5))
 print(theplot)
 ```
@@ -151,7 +151,7 @@ sprintf("mean and median total number of steps per day are %.1f and %.1f", meanT
 g <- ggplot(stepsPerDayTotalCopy, aes(x=total))
 binsize <- 5000
 theplot <- g + geom_histogram(binwidth=binsize, fill="white", colour="red", origin=0)
-theplot <-  theplot + xlab("Total number of steps") + ggtitle("Histogram of the total number\n of steps taken each day")
+theplot <-  theplot + xlab("Total number of steps") + ylab("Count") + ggtitle("Histogram of the total number of steps \ntaken each day with NA being replaced")
 theplot <- theplot + scale_x_continuous(breaks=seq(0, 30000, 5000)) +  scale_y_continuous(limits=c(0,40), breaks=seq(0, 50, 5)) 
 print(theplot)
 ```
